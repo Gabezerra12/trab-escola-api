@@ -1,0 +1,253 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Portal de Acesso à API de Gerenciamento Escolar",
+    "description": "Bem-vindo(a) à documentação interativa da API! Use este portal para explorar e testar os endpoints de Professores, Turmas e Alunos. Nossa API utiliza a arquitetura **RESTful**, garantindo comunicação clara e eficiente para a gestão da escola.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/professores": {
+      "get": {
+        "tags": ["Professores"],
+        "summary": "Ver todos os Professores cadastrados",
+        "responses": {
+          "200": {
+            "description": "Sucesso! A lista completa de professores foi carregada.",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/Professor" }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Professores"],
+        "summary": "Cadastrar um novo Professor na base de dados",
+        "parameters": [
+          {
+            "name": "professor",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ProfessorInput" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Professor criado e registrado com sucesso!" },
+          "400": { "description": "Os dados fornecidos estão incompletos ou inválidos." }
+        }
+      }
+    },
+    "/professores/{id}": {
+      "get": {
+        "tags": ["Professores"],
+        "summary": "Localizar um Professor específico pelo ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Professor encontrado. Retorna os detalhes.", "schema": { "$ref": "#/definitions/Professor" } },
+          "404": { "description": "Professor não encontrado no nosso registro." }
+        }
+      },
+      "put": {
+        "tags": ["Professores"],
+        "summary": "Atualizar os dados de um Professor existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "professor",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/ProfessorInput" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Professor atualizado com sucesso." },
+          "404": { "description": "Professor não encontrado para atualização." }
+        }
+      },
+      "delete": {
+        "tags": ["Professores"],
+        "summary": "Remover um Professor pelo ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Professor removido da base de dados (Sem conteúdo para retorno)." },
+          "404": { "description": "Professor não encontrado para exclusão." }
+        }
+      }
+    },
+    "/turmas": {
+      "get": {
+        "tags": ["Turmas"],
+        "summary": "Visualizar todas as Turmas abertas",
+        "responses": {
+          "200": { "description": "Sucesso! A lista de turmas foi recuperada.", "schema": { "type": "array", "items": { "$ref": "#/definitions/Turma" } } }
+        }
+      },
+      "post": {
+        "tags": ["Turmas"],
+        "summary": "Criar e adicionar uma nova Turma",
+        "parameters": [
+          { "name": "turma", "in": "body", "required": true, "schema": { "$ref": "#/definitions/TurmaInput" } }
+        ],
+        "responses": { "201": { "description": "Turma criada com sucesso e pronta para receber alunos." } }
+      }
+    },
+    "/turmas/{id}": {
+      "get": {
+        "tags": ["Turmas"],
+        "summary": "Encontrar uma Turma específica pelo ID",
+        "parameters": [ { "name": "id", "in": "path", "required": true, "type": "integer" } ],
+        "responses": { "200": { "description": "Detalhes da turma encontrados.", "schema": { "$ref": "#/definitions/Turma" } } }
+      },
+      "put": {
+        "tags": ["Turmas"],
+        "summary": "Ajustar/Modificar os dados de uma Turma",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" },
+          { "name": "turma", "in": "body", "required": true, "schema": { "$ref": "#/definitions/TurmaInput" } }
+        ],
+        "responses": { "200": { "description": "Turma atualizada com sucesso." } }
+      },
+      "delete": {
+        "tags": ["Turmas"],
+        "summary": "Excluir uma Turma permanentemente",
+        "parameters": [ { "name": "id", "in": "path", "required": true, "type": "integer" } ],
+        "responses": { "204": { "description": "Turma deletada com sucesso (Sem conteúdo para retorno)." } }
+      }
+    },
+    "/alunos": {
+      "get": {
+        "tags": ["Alunos"],
+        "summary": "Listar todos os Alunos matriculados",
+        "responses": {
+          "200": { "description": "Sucesso! A lista de alunos foi recuperada.", "schema": { "type": "array", "items": { "$ref": "#/definitions/Aluno" } } }
+        }
+      },
+      "post": {
+        "tags": ["Alunos"],
+        "summary": "Matricular um novo Aluno",
+        "parameters": [
+          { "name": "aluno", "in": "body", "required": true, "schema": { "$ref": "#/definitions/AlunoInput" } }
+        ],
+        "responses": { "201": { "description": "Aluno matriculado com sucesso." } }
+      }
+    },
+    "/alunos/{id}": {
+      "get": {
+        "tags": ["Alunos"],
+        "summary": "Detalhes de um Aluno específico pelo ID",
+        "parameters": [ { "name": "id", "in": "path", "required": true, "type": "integer" } ],
+        "responses": { "200": { "description": "Aluno encontrado. Retorna os dados cadastrais.", "schema": { "$ref": "#/definitions/Aluno" } } }
+      },
+      "put": {
+        "tags": ["Alunos"],
+        "summary": "Corrigir ou atualizar o cadastro do Aluno",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "type": "integer" },
+          { "name": "aluno", "in": "body", "required": true, "schema": { "$ref": "#/definitions/AlunoInput" } }
+        ],
+        "responses": { "200": { "description": "Cadastro do aluno atualizado com sucesso." } }
+      },
+      "delete": {
+        "tags": ["Alunos"],
+        "summary": "Cancelar a matrícula de um Aluno",
+        "parameters": [ { "name": "id", "in": "path", "required": true, "type": "integer" } ],
+        "responses": { "204": { "description": "Aluno removido do registro (Sem conteúdo para retorno)." } }
+      }
+    }
+  },
+  "definitions": {
+    "Professor": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "description": "Identificador único (gerado automaticamente)." },
+        "nome": { "type": "string", "description": "Nome completo do professor." },
+        "idade": { "type": "integer", "description": "Idade atual." },
+        "materia": { "type": "string", "description": "Disciplina lecionada (ex: 'Matemática')." },
+        "observacoes": { "type": "string", "description": "Notas adicionais sobre o professor." }
+      }
+    },
+    "ProfessorInput": {
+      "type": "object",
+      "properties": {
+        "nome": { "type": "string" },
+        "idade": { "type": "integer" },
+        "materia": { "type": "string" },
+        "observacoes": { "type": "string" }
+      },
+      "required": ["nome", "idade", "materia"]
+    },
+    "Turma": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "description": "Identificador único da turma." },
+        "descricao": { "type": "string", "description": "Nome ou código da turma (ex: '3º Ano A')." },
+        "professor_id": { "type": "integer", "description": "ID do professor responsável por esta turma." },
+        "ativo": { "type": "boolean", "description": "Status da turma (True se estiver ativa)." }
+      }
+    },
+    "TurmaInput": {
+      "type": "object",
+      "properties": {
+        "descricao": { "type": "string" },
+        "professor_id": { "type": "integer" },
+        "ativo": { "type": "boolean" }
+      },
+      "required": ["descricao", "professor_id"]
+    },
+    "Aluno": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "description": "Identificador único do aluno." },
+        "nome": { "type": "string", "description": "Nome completo do aluno." },
+        "idade": { "type": "integer", "description": "Idade atual." },
+        "turma_id": { "type": "integer", "description": "ID da turma em que o aluno está matriculado." },
+        "data_nascimento": { "type": "string", "format": "date", "description": "Data de nascimento no formato AAAA-MM-DD." },
+        "nota_primeiro_semestre": { "type": "number", "format": "float", "description": "Nota do primeiro semestre." },
+        "nota_segundo_semestre": { "type": "number", "format": "float", "description": "Nota do segundo semestre." },
+        "media_final": { "type": "number", "format": "float", "description": "Média final do aluno." }
+      }
+    },
+    "AlunoInput": {
+      "type": "object",
+      "properties": {
+        "nome": { "type": "string" },
+        "idade": { "type": "integer" },
+        "turma_id": { "type": "integer" },
+        "data_nascimento": { "type": "string", "format": "date" },
+        "nota_primeiro_semestre": { "type": "number", "format": "float" },
+        "nota_segundo_semestre": { "type": "number", "format": "float" }
+      },
+      "required": ["nome", "idade", "turma_id"]
+    }
+  }
+}
